@@ -1,37 +1,41 @@
-import random
-from hangman_art import logo, stages
-from hangman_wordlist import word_list
+import time
+from turtle import Screen
+from player import Player
+from car_manager import CarManager
+from scoreboard import Scoreboard
 
-print(logo)
+screen = Screen()
+screen.setup(width=600, height=600)
+screen.title("Turtle Crossing")
+screen.tracer(0)
 
-chosen_word = random.choice(word_list)
-word_length = len(chosen_word)
-game_is_finished = False
-lives = 6
+player = Player()
+car_manager = CarManager()
+scoreboard = Scoreboard()
 
-display = []
-for _ in range(word_length):
-    display += "_"
-print(display)
-while not game_is_finished:
-    print(f"Chosen word: {chosen_word}")
-    guess = input("Guess a letter: ")
+screen.listen()
+screen.onkey(player.move_up, "Up")
 
-    for position in range(word_length):
-        letter = chosen_word[position]
-        # print(f"Current position: {position}\n Current letter: {letter}\n Guessed letter: {guess}")
-        if letter == guess:
-            display[position] = letter
-    print(f"{''.join(display)}")
 
-    if guess not in chosen_word:
-        print(f"You have guessed {guess}, that's not in the word. You lost a life")
-        lives -= 1
-        if lives == 0:
-            game_is_finished = True
-            print("You lose")
-    if not "_" in display:
-        game_is_finished = True
-        print("You manage to guess the word! You WIN!")
+game_is_on = True
+while game_is_on:
+    time.sleep(0.1)
+    screen.update()
 
-    print(stages[lives])
+    car_manager.create_cars()
+    car_manager.move_cars()
+
+    for car in car_manager.all_cars:
+        if car.distance(player) < 20:
+            game_is_on = False
+            scoreboard.game_over()
+
+    if player.is_at_finish_line():
+        player.go_to_start()
+        car_manager.level_up()
+        scoreboard.increase_level()
+
+
+
+
+screen.exitonclick()
