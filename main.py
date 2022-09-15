@@ -1,41 +1,35 @@
-import time
-from turtle import Screen
-from player import Player
-from car_manager import CarManager
-from scoreboard import Scoreboard
-
-screen = Screen()
-screen.setup(width=600, height=600)
-screen.title("Turtle Crossing")
-screen.tracer(0)
-
-player = Player()
-car_manager = CarManager()
-scoreboard = Scoreboard()
-
-screen.listen()
-screen.onkey(player.move_up, "Up")
-
-
-game_is_on = True
-while game_is_on:
-    time.sleep(0.1)
-    screen.update()
-
-    car_manager.create_cars()
-    car_manager.move_cars()
-
-    for car in car_manager.all_cars:
-        if car.distance(player) < 20:
-            game_is_on = False
-            scoreboard.game_over()
-
-    if player.is_at_finish_line():
-        player.go_to_start()
-        car_manager.level_up()
-        scoreboard.increase_level()
+# import turtle
+# import pandas
+#
+#
+# #Screen Setup
+# screen = turtle.Screen()
+# screen.title("U.S. States Game")
+# image = "blank_states_img.gif"
+# screen.addshape(image)
+# turtle.shape(image)
+#
+# data = pandas.read_csv("50_states.csv")
+# all_states = data.state.to_list()
+# guessed_state = []
+#
+#
+# while len(guessed_state) < 50:
+#     answer_state = screen.textinput(title=f"{len(guessed_state)}/50 States Correct",
+#                                     prompt="what's another state?").title()
+#
+# #If  answer_state is one of the states in all states of the 50_states.csv
+#     #If they got it right:
+#         #Create a turtle to write the name of the state at the state's x and y coordinate
+#     if answer_state in all_states:
+#         guessed_state.append(answer_state)
+#         t = turtle.Turtle()
+#         t.hideturtle()
+#         t.penup()
+#         state_data = data[data.state == answer_state]
+#         t.goto(int(state_data.x), int(state_data.y))
+#         t.write(answer_state)
+#
+# screen.exitonclick()
 
 
-
-
-screen.exitonclick()
