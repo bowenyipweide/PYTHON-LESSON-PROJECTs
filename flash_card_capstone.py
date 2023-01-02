@@ -42,9 +42,6 @@ def known_card():
     data = pd.DataFrame(to_learn)
     data.to_csv("data/words_to_learn.csv", index=False)
 
-
-
-
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
